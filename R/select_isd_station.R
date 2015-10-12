@@ -3,12 +3,19 @@
 #' using \code{get_isd_stations} there may be several stations returned, 
 #' so this function provides a means for selecting a single station from what 
 #' may be a list of several stations.
-#' @param stn_df a data frame of stations that is obtained with (and often filtered
-#' by) the \code{get_isd_stations} function.
+#' @param stn_df a data frame of stations that is obtained with (and often
+#' filtered by) the \code{get_isd_stations} function.
 #' @param number the row number of the station listing for which station data 
 #' should be returned.
 #' @param name the partial name of the station for which station data should 
 #' be returned.
+#' 
+#' @return Returns a data frame of ISD stations as documented in 
+#'   \code{\link{get_isd_stations}}.
+#'   
+#' @seealso
+#'   \code{\link{get_isd_stations}}
+#'   
 #' @examples 
 #' \dontrun{
 #' # Obtain a listing of all stations within a bounding box and
@@ -31,16 +38,19 @@ select_isd_station <- function(stn_df,
                                name = NULL){
   
   # Ensure that the search words for the station name are lowercase
-  name <- tolower(name)
+  if (!is.null(name)){
+    name <- tolower(name)
+  }
   
   # If neither any number nor name provided, return NA
   if (is.null(number) & is.null(name)){
     
     message("No search terms provided.")
+    
     return(NA)
   }
   
-  # If number provided, create the 'station_id' string from
+  # If just the number provided, create the 'station_id' string from
   # the USAF and WBAN from the row corresponding the the number
   if (!is.null(number) & is.null(name)){
     
@@ -50,20 +60,41 @@ select_isd_station <- function(stn_df,
     return(station_id)
   }
   
+  # If the name is provided, filter the data frame by that name
   if (!is.null(name)){
+    
     station_name <- 
       gsub("  ", " ",
-           tolower(as.character(as.data.frame(stn_df[,3])[[1]])))
+           tolower(as.character(as.data.frame(stn_df$name)[[1]])))
+    
+    re.escape <- function(strings){
+      
+      vals <- c("\\\\", "\\[", "\\]", "\\(", "\\)", 
+                "\\{", "\\}", "\\^", "\\$", "\\*", 
+                "\\+", "\\?", "\\.", "\\|")
+      
+      replace.vals <- paste0("\\\\", vals)
+      
+      for (i in seq_along(vals)){
+        
+        strings <- gsub(vals[i], replace.vals[i], strings)
+      }
+      
+      strings
+    }
+    
+    name <- re.escape(strings = name)
     
     any_matched_stations <- any(grepl(name, station_name))
     
     if (any_matched_stations == FALSE){
       
       message("No stations were matched with the supplied search term.")
+      
       return(NA)
     }
     
-    if (any_matched_stations){
+    if (any_matched_stations == TRUE){
       
       number_of_matched_stations <-
         sum(grepl(name, station_name))
@@ -95,7 +126,9 @@ select_isd_station <- function(stn_df,
         }
         
         message("Several stations matched. Provide a more specific search term.")
+        
         print(stn_df[which(grepl(name, station_name)),])
+        
         return(NA)
       }
     }

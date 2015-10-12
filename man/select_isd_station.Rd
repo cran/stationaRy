@@ -7,14 +7,18 @@
 select_isd_station(stn_df, number = NULL, name = NULL)
 }
 \arguments{
-\item{stn_df}{a data frame of stations that is obtained with (and often filtered
-by) the \code{get_isd_stations} function.}
+\item{stn_df}{a data frame of stations that is obtained with (and often
+filtered by) the \code{get_isd_stations} function.}
 
 \item{number}{the row number of the station listing for which station data
 should be returned.}
 
 \item{name}{the partial name of the station for which station data should
 be returned.}
+}
+\value{
+Returns a data frame of ISD stations as documented in
+  \code{\link{get_isd_stations}}.
 }
 \description{
 After filtering the list of global meteorological stations
@@ -37,5 +41,8 @@ cypress_bowl_snowboard_stn <-
   select_isd_station(stn_df = stations_within_domain,
                      name = "cypress bowl snowboard")
 }
+}
+\seealso{
+\code{\link{get_isd_stations}}
 }
 
