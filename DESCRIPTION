@@ -1,7 +1,7 @@
 Type: Package
 Package: stationaRy
 Title: Detailed Meteorological Data from Stations All Over the World
-Version: 0.5.0
+Version: 0.5.1
 Description: Acquire hourly meteorological data from stations located all over
     the world. There is a wealth of data available, with historic weather data
     accessible from nearly 30,000 stations. The available data is automatically
@@ -23,10 +23,10 @@ Suggests: testthat, covr
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 NeedsCompilation: no
-Packaged: 2019-09-25 13:41:06 UTC; rich
+Packaged: 2020-01-12 04:02:02 UTC; rich
 Author: Richard Iannone [aut, cre] (<https://orcid.org/0000-0003-3925-190X>)
 Maintainer: Richard Iannone <riannone@me.com>
 Repository: CRAN
-Date/Publication: 2019-09-25 14:40:05 UTC
+Date/Publication: 2020-01-12 06:00:06 UTC
